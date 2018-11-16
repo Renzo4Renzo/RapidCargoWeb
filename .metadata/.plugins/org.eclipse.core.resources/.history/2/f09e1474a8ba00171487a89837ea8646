@@ -1,0 +1,95 @@
+package com.dao.all;
+
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+
+import com.entidades.all.Ciudad;
+import com.entidades.all.Personal;
+import com.entidades.all.Ruta;
+import com.entidades.all.TipoUsuario;
+import com.entidades.all.Usuario;
+
+public class daoPersonal {
+	
+	public static daoPersonal _Instancia;
+	private daoPersonal() {}
+	public static daoPersonal Instancia() {
+		if(_Instancia==null) {
+			_Instancia = new daoPersonal();
+		}
+		return _Instancia;
+	}
+	
+	public Boolean CrearPersonal(Personal personal, Usuario usuario) throws Exception{
+		Connection cn = Conexion.conectar();
+		Boolean inserto = false;
+		try {
+			CallableStatement cst = 
+					cn.prepareCall("{call spCrearPersonal(?,?,?,?,?,?,?,?,?,?)}");
+			cst.setString(1, personal.getDniPersonal());
+			cst.setString(2, personal.getNombresPersonal());
+			cst.setString(3, personal.getApellidosPersonal());
+			cst.setString(4, personal.getDireccionPersonal());
+			cst.setString(5, personal.getTelefono());
+			cst.setString(6, personal.getCorreoCorporativo());
+			cst.setString(7, usuario.getNombreUsuario());
+			cst.setString(8, usuario.getContrasena());
+			cst.setInt(9, usuario.getTipoUsuario().getIdTipoUsuario());
+			cst.setInt(10, usuario.getSucursal().getIdSucursal());
+			int i = cst.executeUpdate();
+			if(i>0) {inserto=true;}
+		} catch (Exception e) { throw e;}
+		finally{cn.close();}
+		return inserto;
+	}
+	
+	public ArrayList<Personal> ListarPersonal(String cadena) throws Exception{
+		Connection cn = Conexion.conectar();
+		ArrayList<Personal> lista = new ArrayList<Personal>();
+		try {
+			CallableStatement cst = cn.prepareCall("{call spListarPersonal(?)}");
+			cst.setString(1,cadena);
+			ResultSet rs = cst.executeQuery();
+			while(rs.next()){
+				Personal p = new Personal();
+				p.setIdPersonal(rs.getInt("idPersonal"));
+				p.setDniPersonal(rs.getString("dniPersonal"));
+				p.setNombresPersonal("nombresPersonal");
+				p.setApellidosPersonal("apellidosPersonal");
+				p.setTelefono(rs.getString("telefono"));
+				
+				Usuario usuario = new Usuario();
+				usuario.setNombreUsuario(rs.getString("nombreUsuario"));
+				usuario.setContrasena(rs.getString("contrasena"));
+				
+				TipoUsuario tipoUsuario = new TipoUsuario();
+				tipoUsuario.setDescripcion(rs.getString("descripcion"));
+				
+				usuario.setTipoUsuario(tipoUsuario);
+				
+				
+				p.setUsuario(usuario);
+				
+				lista.add(p);
+			}
+		} catch (Exception e) { throw e;}
+		finally{cn.close();}
+		return lista;
+	}
+	
+	
+	public Boolean EliminarPersonal(String idPersonal) throws Exception{
+		Connection cn = Conexion.conectar();
+		Boolean elimino = false;
+		try {
+			CallableStatement cst = cn.prepareCall("{call spEliminarPersonal(?)}");
+			cst.setString(1, idPersonal);
+			int i = cst.executeUpdate();
+			if(i>0) {elimino=true;}
+		} catch (Exception e) { throw e;}
+		finally{cn.close();}
+		return elimino;
+	}
+}

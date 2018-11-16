@@ -1,0 +1,68 @@
+package com.web.rapidcargo;
+
+import java.util.ArrayList;
+
+import javax.servlet.http.HttpServletRequest;
+
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.ModelAndView;
+
+
+import pojo.Encomienda;
+import pojo.Usuario;
+import utiles.Constantes;
+import utiles.Desconexion;
+
+@Controller
+public class EntregaController {
+	@RequestMapping(value = "/ListarEntregasEnSucursal", method = RequestMethod.GET)
+	public ModelAndView ListarEntregasEnSucursal(HttpServletRequest req) {		
+		try {
+			if (Constantes.conectado == false) {
+				return Desconexion.VerificarDesconexion();
+			}
+			Usuario u = (Usuario)req.getSession().getAttribute("usuario");
+			RestTemplate rest = new RestTemplate();
+			String URI = Constantes.urlAPI + "/Encomienda/ListarEncomiendasEntregaSucursal?idSucursalOrigen="+u.getSucursal().getIdSucursal();
+			ArrayList<Encomienda> lista = new ArrayList<Encomienda>();
+			
+			ArrayList<Encomienda> result = rest.getForObject(URI, lista.getClass());
+			
+			ModelAndView m = new ModelAndView("almacen/validarEntrega");
+			m.addObject("listita", result);
+			return m;
+		} catch (Exception e) {
+			return new ModelAndView("frmError", "error", e.getMessage());
+		}	
+	}
+	
+	@RequestMapping(value = "/ValidarEntrega", method = RequestMethod.GET)
+	public String ValidarEntrega(String idEncomienda,
+						HttpServletRequest req, ModelMap model) {		
+		try {
+			Usuario u = (Usuario)req.getSession().getAttribute("usuario");
+			
+			RestTemplate rest = new RestTemplate();
+		
+			String uri = Constantes.urlAPI + "/Entrega/EntregarEnSucursal?idEncomienda="+idEncomienda+"&nombreUsuario="+u.getNombreUsuario();			
+			
+			Boolean result = false;
+			
+			result = rest.getForObject(uri, result.getClass()) ;
+			
+			if(result)
+				return "redirect:/ListarEntregasEnSucursal?msg=Entrega Realizada Correctamente";
+			else
+				return "redirect:/ListarEntregasEnSucursal?msg=No se pudo Realizar la Entrega";
+		
+		} catch (Exception e) {
+			return "error";
+		}	
+	}
+}

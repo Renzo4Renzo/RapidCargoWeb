@@ -1,0 +1,5 @@
+
+oct. 24, 2017 16:08:51.05 NEW SESSION
+oct. 24, 2017 16:08:51.05 [5408:6164:1024/160851.054:ERROR:CONSOLE(400)] "Uncaught (in promise) TypeError: Cannot read property 'indexOf' of null", source: chrome-devtools://devtools/bundled/inspector.js (400)
+oct. 24, 2017 16:50:51.45 [11916:2628:1024/165051.449:ERROR:service_manager.cc(156)] Connection InterfaceProviderSpec prevented service: content_plugin from binding interface: memory_instrumentation::mojom::Coordinator exposed by: content_browser
+oct. 24, 2017 16:52:28.28 [11916:9660:1024/165228.281:ERROR:media_internals.cc(107)] Cannot get RenderProcessHost

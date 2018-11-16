@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;Constantes.java&apos; to &apos;Constantes.java&apos;&#x0D;&#x0A;- Original project: &apos;1.1.Web&apos;&#x0D;&#x0A;- Destination element: &apos;Constantes.java&apos;&#x0D;&#x0A;- Original element: &apos;Constantes.java&apos;" description="Copy file" element1="src/main/java/utiles/Constantes.java" files="1" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1539286535771" target="/1.1.Web/src/main/java/utiles/Constantes.java" units="0" version="1.0"/>
+</session>

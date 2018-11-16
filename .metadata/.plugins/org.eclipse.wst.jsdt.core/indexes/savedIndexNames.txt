@@ -1,0 +1,8 @@
+INDEX VERSION 1.4+C:\Users\Renzo\Desktop\RapidCargoT3_Programas_Refactorizado\RapidCargoT3Web_Ref\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+2857976058.index
+3887113362.index
+1462638561.index
+3274839556.index
+1517297112.index
+3779664634.index
+4162103609.index

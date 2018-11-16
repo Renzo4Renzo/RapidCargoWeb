@@ -1,0 +1,149 @@
+package com.dao.all;
+
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+
+import com.entidades.all.Cliente;
+import com.entidades.all.Encomienda;
+import com.entidades.all.EntregaUnica;
+import com.entidades.all.EstadoEncomienda;
+import com.entidades.all.Persona;
+import com.entidades.all.Ruta;
+import com.entidades.all.Sucursal;
+
+
+public class daoEncomienda {
+	
+	public static daoEncomienda _Instancia;
+	private daoEncomienda() {}
+	public static daoEncomienda Instancia() {
+		if(_Instancia==null) {
+			_Instancia = new daoEncomienda();
+		}
+		return _Instancia;
+	}
+	
+	public Boolean RegistrarEncomienda(Encomienda encomienda) throws Exception{
+		Connection cn = Conexion.conectar();
+		Boolean inserto = false;
+		try {
+			CallableStatement cst = 
+					cn.prepareCall("{call spRegistrarEncomienda(?,?,?,?,?,?,?,?,?,?,?,?)}");
+			cst.setString(1, encomienda.getCliente().getDniCliente());
+			cst.setInt(2, encomienda.getRuta().getIdRuta());
+			cst.setString(3, encomienda.getFechaLlegada());
+			cst.setString(4, encomienda.getNombreDestinatario());
+			cst.setString(5, encomienda.getDireccionDestinatario());
+			cst.setInt(6,encomienda.getSucursalOrigen().getIdSucursal());
+			cst.setInt(7,encomienda.getSucursalDestino().getIdSucursal());
+			cst.setString(8,encomienda.getUsuarioCajero().getNombreUsuario());
+			cst.setFloat(9,encomienda.getPeso());
+			cst.setFloat(10,encomienda.getMontoPago());
+			cst.setString(11,encomienda.getDescripcionEncomienda());
+			cst.setBoolean(12,encomienda.getaDomicilio());
+			int i = cst.executeUpdate();
+			if(i>0) {inserto=true;}
+		} catch (Exception e) { throw e;}
+		finally{cn.close();}
+		return inserto;
+	}
+	
+	public Encomienda DevolverEncomienda (String codigoEncomienda) throws Exception {
+		Connection cn = Conexion.conectar();
+		Encomienda encomienda = null;
+		
+		try {
+			CallableStatement cst = cn.prepareCall("{call spDevolverCliente(?)}");
+			cst.setString(1, codigoEncomienda);
+			ResultSet rs = cst.executeQuery();
+			
+			if(rs.next()) {
+				encomienda= new Encomienda();			
+				encomienda.setIdEncomienda(rs.getInt("IDENCOMIENDA"));
+				encomienda.setCodigoEncomienda(rs.getString("CODIGOENCOMIENDA"));
+				Cliente c = new Cliente();
+				c.setDniCliente(rs.getString("DNI"));
+				Persona p = new Persona();
+				p.setNombres(rs.getString("NOMBRES"));
+				p.setApellidos(rs.getString("APELLIDOS"));
+				c.setPersona(p);
+				
+				encomienda.setCliente(c);
+				
+				Ruta ruta = new Ruta();
+				ruta.setNombreRuta(rs.getString("NOMBRERUTA"));
+				encomienda.setRuta(ruta);
+				
+				encomienda.setFechaRegistro(rs.getString("FECHAREGISTRO"));
+				
+				Sucursal sucursalOrigen = new Sucursal();
+				sucursalOrigen.setNombreAgencia(rs.getString("NOMBREAGENCIAORIGEN"));
+				
+				encomienda.setSucursalOrigen(sucursalOrigen);
+				
+				Sucursal sucursalDestino = new Sucursal();
+				sucursalDestino.setNombreAgencia(rs.getString("NOMBREAGENCIADESTINO"));
+				
+				encomienda.setSucursalDestino(sucursalDestino);
+				
+				encomienda.setNombreDestinatario(rs.getString("NOMBREDESTINATARIO"));
+				
+				EstadoEncomienda estadoEncomienda = new EstadoEncomienda();
+				
+				estadoEncomienda.setDescripcionEstadoEncomienda(rs.getString("DESCRIPCIONESTADO"));
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+		finally {
+			cn.close();
+		}
+		return encomienda;
+	}
+	
+	public ArrayList<Encomienda> ListarEncomienda(String fechaInicio, String fechaFin) throws Exception{
+		Connection cn = Conexion.conectar();
+		ArrayList<Encomienda> lista = new ArrayList<Encomienda>();
+		try {
+			CallableStatement cst = cn.prepareCall("{call spListarEncomiendasGerente (?,?)}");
+			cst.setString(1,fechaInicio);
+			cst.setString(1,fechaFin);
+			ResultSet rs = cst.executeQuery();
+			while(rs.next()){
+				
+				Encomienda e = new Encomienda();
+				e.setIdEncomienda(rs.getInt("IDENCOMIENDA"));
+				e.setCodigoEncomienda(rs.getString("CODIGOENCOMIENDA"));
+				
+					Cliente c = new Cliente();
+					    Persona p = new Persona();
+						p.setDNI(rs.getString("DNI"));
+						p.setNombres(rs.getString("NOMBRES"));
+						p.setApellidos(rs.getString("APELLIDOS"));
+					c.setPersona(p);
+				e.setCliente(c);
+				
+				e.setNombreDestinatario(rs.getString("NOMBREDESTINATARIO"));
+				e.setFechaRegistro(rs.getString("FECHAREGISTRO"));
+				
+			    EntregaUnica eu = new EntregaUnica();
+					eu.setFechaEntrega(rs.getDate("FECHAENTREGA"));
+				e.setEntregaUnica(eu);
+
+				e.setMontoPago(rs.getFloat("MONTOPAGO"));
+				
+				EstadoEncomienda ee = new EstadoEncomienda();
+					ee.setDescripcionEstadoEncomienda(rs.getString("DESCRIPCIONESTADO"));
+				e.setEstadoEncomienda(ee);
+				
+				lista.add(e);
+			}
+		} catch (Exception e) { throw e;}
+		finally{cn.close();}
+		return lista;
+	}
+	
+	
+}

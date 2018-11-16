@@ -1,0 +1,19 @@
+package utiles;
+
+import java.util.ArrayList;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.ModelAndView;
+
+import pojo.Encomienda;
+import pojo.Usuario;
+
+public class Desconexion {
+	
+	public static ModelAndView VerificarDesconexion() {	
+		ModelAndView modelAndView =  new ModelAndView("redirect:/login");
+		return modelAndView;
+	}
+}

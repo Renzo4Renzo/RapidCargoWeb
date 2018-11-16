@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workingSetManager>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1508702535679_1" label="1.Presentacion" name="1.Presentacion">
+<item elementID="=1.1.Web" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1508702556651_2" label="2.Servicios" name="2.Servicios">
+<item elementID="=2.1.Rest" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1508702563051_3" label="3.Dominio" name="3.Dominio">
+<item elementID="=3.1.Entidades" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSet>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1508702569302_4" label="4.Persistencia" name="4.Persistencia">
+<item elementID="=4.1.DAO" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSet>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1508702518329_0" label="Window Working Set" name="Aggregate for window 1508702518328"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1508702578816_5" label="Multiple Working Sets" name="Aggregate:1.Presentacion:2.Servicios:3.Dominio:4.Persistencia:">
+<workingSet IMemento.internal.id="1.Presentacion"/>
+<workingSet IMemento.internal.id="2.Servicios"/>
+<workingSet IMemento.internal.id="3.Dominio"/>
+<workingSet IMemento.internal.id="4.Persistencia"/>
+</workingSet>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1508862162050_6" label="Window Working Set" name="Aggregate for window 1508862162050"/>
+<mruList name="3.Dominio"/>
+<mruList name="2.Servicios"/>
+<mruList name="1.Presentacion"/>
+</workingSetManager>
