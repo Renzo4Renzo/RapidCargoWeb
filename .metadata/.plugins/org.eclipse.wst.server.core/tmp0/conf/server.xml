@@ -124,7 +124,7 @@
              Note: The pattern used is equivalent to using pattern="common" -->
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log" suffix=".txt"/>
 
-      <Context docBase="C:\Users\Renzo\Desktop\RapidCargoT3_Programas_Refactorizado\RapidCargoT3Web_Ref\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\ROOT" path="" reloadable="false"/><Context docBase="C:\Users\Renzo\Desktop\RapidCargoT3_Programas_Refactorizado\RapidCargoT3Web_Ref\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\2.1.Rest" path="/rest" reloadable="true" source="org.eclipse.jst.jee.server:2.1.Rest"/><Context docBase="C:\Users\Renzo\Desktop\RapidCargoT3_Programas_Refactorizado\RapidCargoT3Web_Ref\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\1.1.Web" path="/rapidcargo" reloadable="true" source="org.eclipse.jst.jee.server:1.1.Web"/></Host>
+      <Context docBase="C:\Users\DISCO LOCAL\Desktop\RapidCargoWeb-master\RapidCargoWeb\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\ROOT" path="" reloadable="false"/><Context docBase="C:\Users\DISCO LOCAL\Desktop\RapidCargoWeb-master\RapidCargoWeb\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\1.1.Web" path="/rapidcargo" reloadable="true" source="org.eclipse.jst.jee.server:1.1.Web"/><Context docBase="C:\Users\DISCO LOCAL\Desktop\RapidCargoWeb-master\RapidCargoWeb\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\2.1.Rest" path="/rest" reloadable="true" source="org.eclipse.jst.jee.server:2.1.Rest"/></Host>
     </Engine>
   </Service>
 </Server>

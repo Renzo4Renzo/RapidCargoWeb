@@ -71,6 +71,18 @@ public class PersonalController {
 		return p;
 	}
 	
+	@RequestMapping(value = "/Personal/ObtenerPersonal", method = RequestMethod.GET, 
+			produces ="application/json")
+		public @ResponseBody Personal ObtenerPersonal(int idPersonal) {
+		Personal p = null;
+		try {
+			p= daoPersonal.Instancia().ObtenerPersonal(idPersonal);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return p;
+	}
+	
 	@RequestMapping(value = "/Personal/EliminarPersonal", method = RequestMethod.GET, 
 			produces ="application/json")
 	public @ResponseBody Boolean DesactivarPersonal(String idPersonal) {
@@ -81,6 +93,48 @@ public class PersonalController {
 			e.printStackTrace();
 			}
 			return elimino;
+	}
+	
+	@RequestMapping(value = "/Personal/ActualizarPersonal", method = RequestMethod.GET, 
+			produces ="application/json")
+		public @ResponseBody Boolean ActualizarPersonal(int idPersonal,String dniPersonal, String nombresPersonal,String apellidosPersonal,String direccionPersonal,String telefono,
+				String correoCorporativo,String generoPersonal, String nombreUsuario, String contrasena, int idTipoUsuario, int idSucursal) {
+		Boolean inserto = false;
+		try {
+			Personal personal = new Personal();
+			personal.setIdPersonal(idPersonal);
+			personal.setDNI(dniPersonal);
+			
+			Persona persona = new Persona();
+			
+			persona.setNombres(nombresPersonal);
+			persona.setApellidos(apellidosPersonal);
+			persona.setDireccion(direccionPersonal);
+			persona.setTelefono(telefono);
+			persona.setGenero(generoPersonal);
+			
+			personal.setCorreoCorporativo(correoCorporativo);
+			
+			personal.setPersona(persona);
+			
+			Usuario usuario = new Usuario();
+			usuario.setNombreUsuario(nombreUsuario);
+			usuario.setContrasena(contrasena);
+			
+			TipoUsuario tipoUsuario= new TipoUsuario();
+			tipoUsuario.setIdTipoUsuario(idTipoUsuario);
+			
+			Sucursal sucursal = new Sucursal();
+			sucursal.setIdSucursal(idSucursal);
+			
+			usuario.setSucursal(sucursal);
+			usuario.setTipoUsuario(tipoUsuario);
+			
+			inserto = daoPersonal.Instancia().ActualizarPersonal(personal, usuario);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return inserto;
 	}
 
 }

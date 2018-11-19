@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import com.entidades.all.Persona;
 import com.entidades.all.Personal;
+import com.entidades.all.Sucursal;
 import com.entidades.all.TipoUsuario;
 import com.entidades.all.Usuario;
 
@@ -62,7 +63,7 @@ public class daoPersonal {
 				persona.setNombres(rs.getString("NOMBRES"));
 				persona.setApellidos(rs.getString("APELLIDOS"));
 				persona.setTelefono(rs.getString("TELEFONO"));
-				
+
 				p.setPersona(persona);
 				
 				Usuario usuario = new Usuario();
@@ -83,6 +84,49 @@ public class daoPersonal {
 		return lista;
 	}
 	
+	public Personal ObtenerPersonal(int idPersonal) throws Exception{
+		Connection cn = Conexion.conectar();
+		Personal p = new Personal();
+		try {
+			CallableStatement cst = cn.prepareCall("{call spObtenerPersonal(?)}");
+			cst.setInt(1,idPersonal);
+			ResultSet rs = cst.executeQuery();
+			while(rs.next()){
+			    p = new Personal();
+				p.setIdPersonal(rs.getInt("idPersonal"));
+				p.setCorreoCorporativo(rs.getString("CORREOCORPORATIVO"));
+				Persona persona = new Persona();
+				persona.setDNI(rs.getString("DNI"));
+				persona.setNombres(rs.getString("NOMBRES"));
+				persona.setApellidos(rs.getString("APELLIDOS"));
+				persona.setTelefono(rs.getString("TELEFONO"));
+				persona.setDireccion(rs.getString("DIRECCION"));
+				persona.setGenero(rs.getString("GENERO"));
+
+				p.setPersona(persona);
+				
+				Usuario usuario = new Usuario();
+				usuario.setNombreUsuario(rs.getString("nombreUsuario"));
+				usuario.setContrasena(rs.getString("contrasena"));
+				
+				TipoUsuario tipoUsuario = new TipoUsuario();
+				tipoUsuario.setDescripcion(rs.getString("descripcion"));
+				
+				Sucursal sucursal = new Sucursal();
+				sucursal.setIdSucursal(rs.getInt("IDSUCURSAL"));
+				sucursal.setNombreAgencia(rs.getString("NOMBREAGENCIA"));
+				
+				usuario.setTipoUsuario(tipoUsuario);
+				usuario.setSucursal(sucursal);
+				
+				p.setUsuario(usuario);
+				
+			}
+		} catch (Exception e) { throw e;}
+		finally{cn.close();}
+		return p;
+	}
+	
 	/*INICIO REFACTORIZACIÓN 4: Remover Bandera de Control*/
 	public Boolean EliminarPersonal(String idPersonal) throws Exception{
 		Connection cn = Conexion.conectar();
@@ -96,4 +140,28 @@ public class daoPersonal {
 		} catch (Exception e) { throw e;}
 	}
 	/*FIN REFACTORIZACIÓN 4: Remover Bandera de Control*/
+	
+	public Boolean ActualizarPersonal(Personal personal, Usuario usuario) throws Exception{
+		Connection cn = Conexion.conectar();
+		try {
+			CallableStatement cst = 
+					cn.prepareCall("{call spActualizarPersonal(?,?,?,?,?,?,?,?,?,?,?,?)}");
+			cst.setInt(1, personal.getIdPersonal());
+			cst.setString(2, personal.getDNI());
+			cst.setString(3, personal.getPersona().getNombres());
+			cst.setString(4, personal.getPersona().getApellidos());
+			cst.setString(5, personal.getPersona().getDireccion());
+			cst.setString(6, personal.getPersona().getTelefono());
+			cst.setString(7, personal.getCorreoCorporativo());
+			cst.setString(8, personal.getPersona().getGenero());
+			cst.setString(9, usuario.getNombreUsuario());
+			cst.setString(10, usuario.getContrasena());
+			cst.setInt(11, usuario.getTipoUsuario().getIdTipoUsuario());
+			cst.setInt(12, usuario.getSucursal().getIdSucursal());
+			int i = cst.executeUpdate();
+			cn.close();
+			if(i>0) return true;
+			return false;
+		} catch (Exception e) { throw e;}
+	}
 }
