@@ -76,5 +76,20 @@ public class daoVehiculo {
 		return elimino;
 	}
 	
+	public Boolean ModificarVehiculo(Vehiculo vehiculo) throws Exception{
+		Connection cn = Conexion.conectar();
+		Boolean edito = false;
+		try {
+			CallableStatement cst = cn.prepareCall("{call spModificarVehiculo(?, ?, ?, ?)}");
+			cst.setInt(1, vehiculo.getIdVehiculo());
+			cst.setString(2, vehiculo.getNumeroPlaca());
+			cst.setInt(3, vehiculo.getTipoVehiculo().getIdTipoVehiculo());
+			cst.setFloat(4, vehiculo.getCapacidadKilos());
+			int i = cst.executeUpdate();
+			if(i>0) {edito=true;}
+		} catch (Exception e) { throw e;}
+		finally{cn.close();}
+		return edito;
+	}
 	
 }
