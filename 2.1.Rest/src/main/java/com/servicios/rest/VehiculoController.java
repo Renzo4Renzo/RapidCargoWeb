@@ -36,6 +36,26 @@ public class VehiculoController {
 		return inserto;
 	}
 	
+	@RequestMapping(value = "/Vehiculo/ModificarVehiculo", method = RequestMethod.GET, 
+			produces ="application/json")
+		public @ResponseBody Boolean ModificarVehiculo(int idVehiculo, String numeroPlaca, int idTipoVehiculo,float capacidadKilos) {
+		Boolean inserto = false;
+		try {
+			Vehiculo vehiculo = new Vehiculo();
+			vehiculo.setIdVehiculo(idVehiculo);
+			vehiculo.setNumeroPlaca(numeroPlaca);
+			TipoVehiculo tipoVehiculo = new TipoVehiculo();
+			tipoVehiculo.setIdTipoVehiculo(idTipoVehiculo);
+			vehiculo.setTipoVehiculo(tipoVehiculo);
+			vehiculo.setCapacidadKilos(capacidadKilos);
+			
+			inserto = daoVehiculo.Instancia().ModificarVehiculo(vehiculo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return inserto;
+	}
+	
 	@RequestMapping(value = "/Vehiculo/ListarVehiculo", method = RequestMethod.GET, 
 			produces ="application/json")
 		public @ResponseBody ArrayList<Vehiculo> ListarVehiculo(int idTipoVehiculo, String cadena) {
